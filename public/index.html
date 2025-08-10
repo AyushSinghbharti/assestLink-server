@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HubbleMeet Profile Card</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-bg: #121212;
+        --card-bg: #1a1a1a;
+        --header-bg: #121212;
+        --accent: #c4d86b;
+        --accent-dark: #a8c057;
+        --text-main: #ffffff;
+        --text-secondary: #c4d86b;
+        --chip-bg: #2a2a2a;
+        --chip-text: #c4d86b;
+        --button-bg: #2a2a2a;
+        --button-text: #ffffff;
+        --button-accent-bg: #c4d86b;
+        --button-accent-text: #000000;
+        --info-box-bg: #2a2a2a;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: var(--primary-bg);
+        font-family: "Montserrat", Arial, sans-serif;
+        color: var(--text-main);
+        overflow-x: hidden;
+      }
+
+      /* Hide scrollbar */
+      body::-webkit-scrollbar {
+        display: none;
+      }
+      body {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        background: var(--primary-bg);
+      }
+
+      .container {
+        width: 100%;
+        max-width: 375px;
+        min-height: 100vh;
+        background: var(--primary-bg);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+      }
+
+      .header {
+        background: var(--header-bg);
+        padding: 60px 24px 24px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .logo {
+        font-family: "Montserrat", Arial, sans-serif;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--accent);
+        letter-spacing: -0.02em;
+        margin-bottom: 8px;
+        line-height: 1;
+      }
+
+      .logo span {
+        color: var(--text-main);
+        font-weight: 800;
+      }
+
+      .subtitle {
+        font-family: "Montserrat", Arial, sans-serif;
+        font-size: 0.9rem;
+        color: var(--text-main);
+        margin-bottom: 24px;
+        font-weight: 400;
+        letter-spacing: 0.01em;
+      }
+
+      .store-buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        margin-bottom: 0;
+      }
+
+      .store-btn {
+        background: var(--button-bg);
+        border-radius: 8px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: none;
+        cursor: pointer;
+        color: var(--text-main);
+        font-size: 0.75rem;
+        font-family: "Montserrat", Arial, sans-serif;
+        font-weight: 600;
+        height: 40px;
+      }
+
+      .store-btn img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .store-btn-text {
+        display: inline-block;
+        text-align: left;
+        font-size: 0.7rem;
+        font-weight: 500;
+        line-height: 1.1;
+      }
+
+      .google-play-img {
+        width: 100px !important;
+        height: 30px !important;
+      }
+
+      .profile-section {
+        position: relative;
+        background: var(--primary-bg);
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .profile-img {
+        max-width: 375px;
+        height: 420px;
+        object-fit: cover;
+        margin-bottom: 0;
+      }
+
+      .share-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--accent);
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      .share-btn svg {
+        width: 20px;
+        height: 20px;
+        color: #000000;
+      }
+
+      .card {
+        background: var(--card-bg);
+        margin-top: 0;
+        padding: 30px 24px 140px 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 2;
+      }
+
+      .name {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 24px;
+        text-align: left;
+      }
+
+      .info-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .info-box {
+        background: var(--info-box-bg);
+        border-radius: 12px;
+        padding: 16px;
+        min-width: 0;
+        flex: 1;
+      }
+
+      .info-label {
+        font-size: 0.85rem;
+        color: var(--text-main);
+        margin-bottom: 6px;
+        font-weight: 400;
+        opacity: 0.7;
+      }
+
+      .info-value {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-main);
+      }
+
+      .bio {
+        margin-bottom: 24px;
+      }
+
+      .bio-label {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-main);
+        margin-bottom: 8px;
+      }
+
+      .bio-text {
+        font-size: 0.9rem;
+        color: var(--text-main);
+        line-height: 1.5;
+        opacity: 0.8;
+      }
+
+      .contact-row {
+        margin-bottom: 16px;
+        position: relative;
+      }
+
+      .contact-label {
+        font-size: 0.85rem;
+        color: var(--text-main);
+        margin-bottom: 4px;
+        font-weight: 400;
+        opacity: 0.7;
+      }
+
+      .contact-value {
+        font-size: 0.95rem;
+        color: var(--text-main);
+        font-weight: 500;
+      }
+
+      /* Blur styles for protected contact info */
+      .contact-value.blurred {
+        filter: blur(8px);
+        -webkit-filter: blur(8px);
+        user-select: none;
+        pointer-events: none;
+        transition: filter 0.3s ease;
+      }
+
+      .connect-to-view-btn {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        background: var(--button-accent-bg);
+        color: var(--button-accent-text);
+        border: none;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "Montserrat", Arial, sans-serif;
+        display: none;
+        z-index: 5;
+      }
+
+      .connect-to-view-btn:hover {
+        background: var(--accent-dark);
+      }
+
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-main);
+        margin-bottom: 12px;
+        margin-top: 20px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .chip {
+        background: var(--chip-bg);
+        color: var(--chip-text);
+        border-radius: 20px;
+        padding: 10px 18px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: inline-block;
+      }
+
+      .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        padding: 12px 0px 12px 0px;
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        max-width: 375px;
+        margin: 0 auto;
+        z-index: 100;
+      }
+
+      .footer-btn {
+        flex: 1;
+        padding: 16px 24px;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: "Montserrat", Arial, sans-serif;
+      }
+
+      .footer-btn.save {
+        background: var(--button-bg);
+        color: var(--button-text);
+        max-width: 180px;
+      }
+
+      .footer-btn.save:hover {
+        background: #3a3a3a;
+      }
+
+      .footer-btn.connect {
+        background: var(--button-accent-bg);
+        color: var(--button-accent-text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-weight: 700;
+        max-width: 140px;
+      }
+
+      .footer-btn.connect:hover {
+        background: var(--accent-dark);
+      }
+
+      .footer-btn.connect svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      /* Hidden class for connect button */
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 400px) {
+        .container {
+          width: 100vw;
+        }
+        .profile-img {
+          width: calc(100vw - 40px);
+        }
+        .footer {
+          width: 100vw;
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">Hubble<span>Meet</span></div>
+        <div class="subtitle">Now go Swipe. Flip. Connect.</div>
+        <div class="store-buttons">
+          <button class="store-btn">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/App_Store_%28iOS%29.svg/512px-App_Store_%28iOS%29.svg.png"
+              alt="App Store"
+            />
+            <span class="store-btn-text">Download on the<br />App Store</span>
+          </button>
+          <button class="store-btn">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+              alt="Google Play"
+              class="google-play-img"
+            />
+          </button>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <img id="profileImage" class="profile-img" src="" alt="Profile Photo" />
+        <button class="share-btn" title="Share">
+          <svg
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="card">
+        <div id="fullName" class="name"></div>
+        <div class="info-row">
+          <div class="info-box">
+            <div class="info-label">Working at</div>
+            <div id="company" class="info-value"></div>
+          </div>
+          <div class="info-box">
+            <div class="info-label">Position</div>
+            <div id="jobTitle" class="info-value"></div>
+          </div>
+        </div>
+
+        <div class="bio">
+          <div class="bio-label">Bio</div>
+          <div id="bio" class="bio-text"></div>
+        </div>
+
+        <div class="contact-row" id="phoneRow">
+          <div class="contact-label">Phone</div>
+          <div id="phone" class="contact-value"></div>
+          <button class="connect-to-view-btn" id="phoneConnectBtn">
+            Connect to view
+          </button>
+        </div>
+        <div class="contact-row" id="emailRow">
+          <div class="contact-label">Email</div>
+          <div id="email" class="contact-value"></div>
+          <button class="connect-to-view-btn" id="emailConnectBtn">
+            Connect to view
+          </button>
+        </div>
+
+        <div class="section-title">Interested Industries</div>
+        <div id="industriesOfInterest" class="chips"></div>
+
+        <div class="section-title">Your Industries</div>
+        <div id="currentIndustry" class="chips"></div>
+
+        <div class="section-title">Interested Job Roles</div>
+        <div id="connectionPreferences" class="chips"></div>
+      </div>
+
+      <div class="footer">
+        <button class="footer-btn save" id="saveContactBtn">
+          Save as Contact
+        </button>
+        <button class="footer-btn connect" id="connectBtn">
+          Connect
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/220/220782.png"
+            style="width: 18px; height: 18px"
+          />
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Extract parameters from URL
+      const params = new URLSearchParams(window.location.search);
+      const userId = params.get("id");
+      const type = params.get("type");
+
+      console.log("User ID from URL:", userId);
+      console.log("Type from URL:", type);
+
+      // Check if type is not "Qr" and apply restrictions
+      const isQrType = type === 'qr' || type === "Qr";
+
+      if (!isQrType) {
+        // Hide the connect button
+        document.getElementById("connectBtn").classList.add("hidden");
+
+        // Blur contact info and show "Connect to view" buttons
+        document.getElementById("phone").classList.add("blurred");
+        document.getElementById("email").classList.add("blurred");
+        document.getElementById("phoneConnectBtn").style.display = "block";
+        document.getElementById("emailConnectBtn").style.display = "block";
+      }
+
+      // App store & play store URLs
+      const APP_STORE_URL = "https://apps.apple.com/app/your-app-id"; // replace with your real link
+      const PLAY_STORE_URL =
+        "https://play.google.com/store/apps/details?id=your.package.name"; // replace with your real link
+
+      // Detect if user is on iOS or Android
+      function getMobileOS() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        if (/android/i.test(ua)) return "Android";
+        if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) return "iOS";
+        return "Other";
+      }
+
+      // Handle Connect to view buttons
+      function handleConnectToView() {
+        const os = getMobileOS();
+        if (os === "iOS") {
+          window.location.href = APP_STORE_URL;
+        } else if (os === "Android") {
+          window.location.href = PLAY_STORE_URL;
+        } else {
+          // fallback: open website or show a modal
+          window.location.href = APP_STORE_URL;
+        }
+      }
+
+      document
+        .getElementById("phoneConnectBtn")
+        .addEventListener("click", handleConnectToView);
+      document
+        .getElementById("emailConnectBtn")
+        .addEventListener("click", handleConnectToView);
+
+      // Handle Connect button (only if visible)
+      document.getElementById("connectBtn").addEventListener("click", () => {
+        const os = getMobileOS();
+        if (os === "iOS") {
+          window.location.href = APP_STORE_URL;
+        } else if (os === "Android") {
+          window.location.href = PLAY_STORE_URL;
+        } else {
+          window.location.href = APP_STORE_URL;
+        }
+      });
+
+      // Handle App Store button
+      document
+        .querySelectorAll(".store-btn")[0]
+        .addEventListener("click", () => {
+          window.location.href = APP_STORE_URL;
+        });
+
+      // Handle Google Play button
+      document
+        .querySelectorAll(".store-btn")[1]
+        .addEventListener("click", () => {
+          window.location.href = PLAY_STORE_URL;
+        });
+
+      //Downloading VCF
+      document
+        .getElementById("saveContactBtn")
+        .addEventListener("click", () => {
+          const vcfData = `
+BEGIN:VCARD
+VERSION:3.0
+FN:${userData.full_name}
+TEL;TYPE=CELL:${userData.phone}
+EMAIL:${userData.email}
+ORG:${userData.current_company?.[0] || ""}
+TITLE:${userData.job_title}
+NOTE:${userData.bio || ""}
+PHOTO;VALUE=URI:${userData.profile_picture_url || ""}
+END:VCARD
+    `.trim();
+
+          const blob = new Blob([vcfData], { type: "text/vcard" });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = `${userData.full_name.replace(/\s+/g, "_")}.vcf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });
+
+      userData = {
+        user_id: "69b83914-b7ef-4039-a9b6-61935224b7dd",
+        full_name: "Shyam Kumareee",
+        date_of_birth: "2000-01-26T00:00:00.000Z",
+        gender: "male",
+        bio: "Passionate about creating intuitive user experiences and innovative design solutions. Always eager to collaborate on projects that make a meaningful impact.",
+        email: "shyam.kumar@amazon.com",
+        phone: "+91 98765 43210",
+        current_company: ["Amazon", "GoPro", "20th Century Studios"],
+        country_code: "null",
+        job_title: "Design Lead",
+        city: "Bangalore",
+        current_industry: ["Technology", "E-commerce"],
+        industries_of_interest: ["fintech", "fashion"],
+        cities_on_radar: ["Bangalore", "Pune"],
+        connection_preferences: [
+          "Product Designer",
+          "Project Manager",
+          "Design Engineer",
+          "Interaction Designer",
+        ],
+        profile_picture_url:
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        allow_vbc_sharing: false,
+        is_active: true,
+        created_at: "2025-07-16T10:33:22.848Z",
+        updated_at: "2025-08-09T07:51:30.499Z",
+      };
+
+      populateProfile(userData);
+
+      function populateProfile(userData) {
+        document.getElementById("fullName").textContent =
+          userData.full_name || "";
+        document.getElementById("company").textContent =
+          userData.current_company?.[0] || "";
+        document.getElementById("jobTitle").textContent =
+          userData.job_title || "";
+        document.getElementById("bio").textContent = userData.bio || "";
+        document.getElementById("phone").textContent = userData.phone || "";
+        document.getElementById("email").textContent = userData.email || "";
+        document.getElementById("profileImage").src =
+          userData.profile_picture_url || "";
+
+        renderChips(
+          "industriesOfInterest",
+          userData.industries_of_interest || []
+        );
+        renderChips("currentIndustry", userData.current_industry || []);
+        renderChips(
+          "connectionPreferences",
+          userData.connection_preferences || []
+        );
+      }
+
+      function renderChips(containerId, items) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+        items.forEach((item) => {
+          const chip = document.createElement("div");
+          chip.className = "chip";
+          chip.textContent = item;
+          container.appendChild(chip);
+        });
+      }
+
+      if (userId) {
+        fetchUserProfile(userId);
+      } else {
+        console.error("No userId found in URL");
+      }
+
+      // Add fetchUserProfile function (placeholder)
+      function fetchUserProfile(userId) {
+        // This would normally fetch data from your API
+        console.log("Fetching profile for user:", userId);
+        // For now, using the hardcoded userData
+      }
+    </script>
+  </body>
+</html>
