@@ -11,24 +11,53 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, "public")));
 
-const assetPath = path.join(__dirname, "public", ".well-known", "assetlinks.json");
-
+// Serve assetlinks.json
 app.get("/.well-known/assetlinks.json", (req, res) => {
-  console.log("[assetlinks] requested ->", assetPath, "exists:", fs.existsSync(assetPath));
-  if (!fs.existsSync(assetPath)) {
-    console.error("[assetlinks] NOT FOUND at", assetPath);
-    return res.status(404).send("assetlinks.json not found on server");
-  }
-
-  res.sendFile("assetlinks.json", { root: path.join(__dirname, "public", ".well-known") }, (err) => {
-    if (err) {
-      console.error("[assetlinks] sendFile error:", err);
-      if (!res.headersSent) res.status(err.status || 500).send("Error sending assetlinks.json");
-    }
+  res.type("application/json");
+  res.sendFile("assetlinks.json", {
+    root: path.join(__dirname, "public", ".well-known"),
   });
 });
 
-// fallback: serve SPA index
+// Check endpoint to verify accessibility & validity
+app.get("/check-assetlink", (req, res) => {
+  const assetlinksPath = path.join(__dirname, "public", ".well-known", "assetlinks.json");
+  
+  try {
+    if (!fs.existsSync(assetlinksPath)) {
+      return res.status(404).json({
+        status: "error",
+        message: "assetlinks.json not found",
+      });
+    }
+
+    const rawData = fs.readFileSync(assetlinksPath, "utf8");
+    let parsedData;
+    try {
+      parsedData = JSON.parse(rawData);
+    } catch (err) {
+      return res.status(500).json({
+        status: "error",
+        message: "Invalid JSON format in assetlinks.json",
+      });
+    }
+
+    res.json({
+      status: "ok",
+      message: "assetlinks.json is accessible",
+      data: parsedData,
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "Error reading assetlinks.json",
+      error: err.message,
+    });
+  }
+});
+
+// Fallback: serve SPA index
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
