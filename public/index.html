@@ -273,16 +273,14 @@
       .connect-to-view-btn {
         position: absolute;
         top: 50%;
-        left: 0;
         right: 0;
         transform: translateY(-50%);
-        background: var(--button-accent-bg);
-        color: var(--button-accent-text);
+        background: transparent;
+        color: #888888;
         border: none;
-        border-radius: 8px;
-        padding: 8px 12px;
-        font-size: 0.8rem;
-        font-weight: 600;
+        padding: 0;
+        font-size: 0.9rem;
+        font-weight: 400;
         cursor: pointer;
         font-family: "Montserrat", Arial, sans-serif;
         display: none;
@@ -290,7 +288,7 @@
       }
 
       .connect-to-view-btn:hover {
-        background: var(--accent-dark);
+        color: #aaaaaa;
       }
 
       .section-title {
@@ -501,17 +499,16 @@
       console.log("Type from URL:", type);
 
       // Check if type is not "Qr" and apply restrictions
-      const isQrType = type === 'qr' || type === "Qr";
+      const isQrType = type === "qr" || type === "Qr";
 
       if (!isQrType) {
         // Hide the connect button
-        document.getElementById("connectBtn").classList.add("hidden");
+        document.getElementById("saveContactBtn").classList.add("hidden");
 
         // Blur contact info and show "Connect to view" buttons
         document.getElementById("phone").classList.add("blurred");
         document.getElementById("email").classList.add("blurred");
         document.getElementById("phoneConnectBtn").style.display = "block";
-        document.getElementById("emailConnectBtn").style.display = "block";
       }
 
       // App store & play store URLs
@@ -629,6 +626,27 @@ END:VCARD
       };
 
       populateProfile(userData);
+      const fetchData = async () => {
+        const url =
+          "https://d2aks9kyhua4na.cloudfront.net/api/user/profiles/get-profile";
+        const res = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OWI4MzkxNC1iN2VmLTQwMzktYTliNi02MTkzNTIyNGI3ZGQiLCJlbWFpbCI6InRlc3R1c2VyMjAwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDgzOTE2OCwiZXhwIjoxNzU1MDk4MzY4fQ.c4u-NQhnZ-g1UFPBoXsY6-oGOAAAVj-09Yo2RngHiIA",
+          },
+          body: JSON.stringify({
+            user_id: userId,
+          }),
+        });
+        console.log("res", res);
+        const data = res.json();
+        console.log(data);
+        populateProfile(data);
+      };
+
+      fetchData();
 
       function populateProfile(userData) {
         document.getElementById("fullName").textContent =
