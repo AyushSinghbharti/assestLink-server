@@ -75,18 +75,10 @@
       }
 
       .logo {
-        font-family: "Montserrat", Arial, sans-serif;
-        font-size: 2.2rem;
-        font-weight: 800;
-        color: var(--accent);
-        letter-spacing: -0.02em;
+        height: 2.2rem;
+        width: auto;
         margin-bottom: 8px;
-        line-height: 1;
-      }
-
-      .logo span {
-        color: var(--text-main);
-        font-weight: 800;
+        object-fit: contain;
       }
 
       .subtitle {
@@ -378,6 +370,48 @@
         display: none !important;
       }
 
+      /* Error message styles */
+      .error-message {
+        text-align: center;
+        padding: 40px 24px;
+        color: var(--text-main);
+      }
+
+      .error-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: var(--accent);
+      }
+
+      .error-text {
+        font-size: 1rem;
+        line-height: 1.5;
+        opacity: 0.8;
+        margin-bottom: 24px;
+      }
+
+      .loading-spinner {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--chip-bg);
+        border-radius: 50%;
+        border-top-color: var(--accent);
+        animation: spin 1s ease-in-out infinite;
+        margin: 20px auto;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .loading-message {
+        text-align: center;
+        padding: 40px 24px;
+        color: var(--text-main);
+      }
+
       @media (max-width: 400px) {
         .container {
           width: 100vw;
@@ -395,7 +429,7 @@
   <body>
     <div class="container">
       <div class="header">
-        <div class="logo">Hubble<span>Meet</span></div>
+        <img src="./logo2.png" alt="HubbleMeet Logo" class="logo" />
         <div class="subtitle">Now go Swipe. Flip. Connect.</div>
         <div class="store-buttons">
           <button class="store-btn">
@@ -415,81 +449,104 @@
         </div>
       </div>
 
-      <div class="profile-section">
-        <img id="profileImage" class="profile-img" src="" alt="Profile Photo" />
-        <button class="share-btn" title="Share">
-          <svg
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <circle cx="18" cy="5" r="3" />
-            <circle cx="6" cy="12" r="3" />
-            <circle cx="18" cy="19" r="3" />
-            <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" />
-          </svg>
-        </button>
+      <!-- Loading State -->
+      <div id="loadingState" class="loading-message">
+        <div class="loading-spinner"></div>
+        <p>Loading profile...</p>
       </div>
 
-      <div class="card">
-        <div id="fullName" class="name"></div>
-        <div class="info-row">
-          <div class="info-box">
-            <div class="info-label">Working at</div>
-            <div id="company" class="info-value"></div>
-          </div>
-          <div class="info-box">
-            <div class="info-label">Position</div>
-            <div id="jobTitle" class="info-value"></div>
-          </div>
-        </div>
+      <!-- Error State -->
+      <div id="errorState" class="error-message hidden">
+        <h2 class="error-title">Profile Not Found</h2>
+        <p class="error-text">
+          Sorry, we couldn't find a user profile for this ID. The user may not exist or the link might be incorrect.
+        </p>
+        <p class="error-text">
+          Please check the URL and try again, or contact support if you believe this is an error.
+        </p>
+      </div>
 
-        <div class="bio">
-          <div class="bio-label">Bio</div>
-          <div id="bio" class="bio-text"></div>
-        </div>
-
-        <div class="contact-row" id="phoneRow">
-          <div class="contact-label">Phone</div>
-          <div id="phone" class="contact-value"></div>
-          <button class="connect-to-view-btn" id="phoneConnectBtn">
-            Connect to view
-          </button>
-        </div>
-        <div class="contact-row" id="emailRow">
-          <div class="contact-label">Email</div>
-          <div id="email" class="contact-value"></div>
-          <button class="connect-to-view-btn" id="emailConnectBtn">
-            Connect to view
+      <!-- Profile Content -->
+      <div id="profileContent" class="hidden">
+        <div class="profile-section">
+          <img id="profileImage" class="profile-img" src="" alt="Profile Photo" />
+          <button class="share-btn" title="Share">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" />
+            </svg>
           </button>
         </div>
 
-        <div class="section-title">Interested Industries</div>
-        <div id="industriesOfInterest" class="chips"></div>
+        <div class="card">
+          <div id="fullName" class="name"></div>
+          <div class="info-row">
+            <div class="info-box">
+              <div class="info-label">Working at</div>
+              <div id="company" class="info-value"></div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Position</div>
+              <div id="jobTitle" class="info-value"></div>
+            </div>
+          </div>
 
-        <div class="section-title">Your Industries</div>
-        <div id="currentIndustry" class="chips"></div>
+          <div class="bio">
+            <div class="bio-label">Bio</div>
+            <div id="bio" class="bio-text"></div>
+          </div>
 
-        <div class="section-title">Interested Job Roles</div>
-        <div id="connectionPreferences" class="chips"></div>
-      </div>
+          <div class="contact-row" id="phoneRow">
+            <div class="contact-label">Phone</div>
+            <div id="phone" class="contact-value"></div>
+            <button class="connect-to-view-btn" id="phoneConnectBtn">
+              Connect to view
+            </button>
+          </div>
+          <div class="contact-row" id="emailRow">
+            <div class="contact-label">Email</div>
+            <div id="email" class="contact-value"></div>
+            <button class="connect-to-view-btn" id="emailConnectBtn">
+              Connect to view
+            </button>
+          </div>
 
-      <div class="footer">
-        <button class="footer-btn save" id="saveContactBtn">
-          Save as Contact
-        </button>
-        <button class="footer-btn connect" id="connectBtn">
-          Connect
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/220/220782.png"
-            style="width: 18px; height: 18px"
-          />
-        </button>
+          <div class="section-title">Interested Industries</div>
+          <div id="industriesOfInterest" class="chips"></div>
+
+          <div class="section-title">Your Industries</div>
+          <div id="currentIndustry" class="chips"></div>
+
+          <div class="section-title">Interested Job Roles</div>
+          <div id="connectionPreferences" class="chips"></div>
+        </div>
+
+        <div class="footer">
+          <button class="footer-btn save" id="saveContactBtn">
+            Save as Contact
+          </button>
+          <button class="footer-btn connect" id="connectBtn">
+            Connect
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/220/220782.png"
+              style="width: 18px; height: 18px"
+            />
+          </button>
+        </div>
       </div>
     </div>
 
     <script>
+      // Global variable to store user data
+      let userData = null;
+
       // Extract parameters from URL
       const params = new URLSearchParams(window.location.search);
       const userId = params.get("id");
@@ -498,25 +555,125 @@
       console.log("User ID from URL:", userId);
       console.log("Type from URL:", type);
 
-      // Check if type is not "Qr" and apply restrictions
-      const isQrType = type === "qr" || type === "Qr";
-
-      if (!isQrType) {
-        // Hide the connect button
-        document.getElementById("saveContactBtn").classList.add("hidden");
-
-        // Blur contact info and show "Connect to view" buttons
-        document.getElementById("phone").classList.add("blurred");
-        document.getElementById("email").classList.add("blurred");
-        document.getElementById("phoneConnectBtn").style.display = "block";
-      }
-
       // App store & play store URLs
       const APP_STORE_URL = "https://apps.apple.com/app/your-app-id"; // replace with your real link
-      const PLAY_STORE_URL =
-        "https://play.google.com/store/apps/details?id=your.package.name"; // replace with your real link
+      const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=your.package.name"; // replace with your real link
 
-      // Detect if user is on iOS or Android
+      // UI state management
+      function showLoading() {
+        document.getElementById("loadingState").classList.remove("hidden");
+        document.getElementById("errorState").classList.add("hidden");
+        document.getElementById("profileContent").classList.add("hidden");
+      }
+
+      function showError() {
+        document.getElementById("loadingState").classList.add("hidden");
+        document.getElementById("errorState").classList.remove("hidden");
+        document.getElementById("profileContent").classList.add("hidden");
+      }
+
+      function showProfile() {
+        document.getElementById("loadingState").classList.add("hidden");
+        document.getElementById("errorState").classList.add("hidden");
+        document.getElementById("profileContent").classList.remove("hidden");
+      }
+
+      // Check if type is not "Qr" and apply restrictions
+      function applyTypeRestrictions() {
+        const isQrType = type === "qr" || type === "Qr";
+
+        if (!isQrType) {
+          // Hide the save contact button
+          document.getElementById("saveContactBtn").classList.add("hidden");
+
+          // Blur contact info and show "Connect to view" buttons
+          document.getElementById("phone").classList.add("blurred");
+          document.getElementById("email").classList.add("blurred");
+          document.getElementById("phoneConnectBtn").style.display = "block";
+          document.getElementById("emailConnectBtn").style.display = "block";
+        }
+      }
+
+      // Fetch user data from API
+      const fetchUserData = async () => {
+        if (!userId) {
+          console.error("No userId found in URL");
+          showError();
+          return;
+        }
+
+        showLoading();
+
+        const url = "https://d2aks9kyhua4na.cloudfront.net/api/user/profiles/get-profile";
+        
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: userId,
+            }),
+          });
+
+          if (!res.ok) {
+            if (res.status === 404) {
+              console.error("User not found");
+              showError();
+              return;
+            }
+            throw new Error(`API error: ${res.status} ${res.statusText}`);
+          }
+
+          const data = await res.json();
+          console.log("API Response:", data);
+
+          if (!data || !data.full_name) {
+            console.error("Invalid user data received");
+            showError();
+            return;
+          }
+
+          userData = data;
+          populateProfile(userData);
+          applyTypeRestrictions();
+          showProfile();
+
+        } catch (err) {
+          console.error("Fetch failed:", err);
+          showError();
+        }
+      };
+
+      // Populate profile with user data
+      function populateProfile(userData) {
+        document.getElementById("fullName").textContent = userData.full_name || "";
+        document.getElementById("company").textContent = userData.current_company?.[0] || "";
+        document.getElementById("jobTitle").textContent = userData.job_title || "";
+        document.getElementById("bio").textContent = userData.bio || "";
+        document.getElementById("phone").textContent = userData.phone || "";
+        document.getElementById("email").textContent = userData.email || "";
+        document.getElementById("profileImage").src = userData.profile_picture_url || "";
+
+        renderChips("industriesOfInterest", userData.industries_of_interest || []);
+        renderChips("currentIndustry", userData.current_industry || []);
+        renderChips("connectionPreferences", userData.connection_preferences || []);
+      }
+
+      // Render chips for various categories
+      function renderChips(containerId, items) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+        items.forEach((item) => {
+          const chip = document.createElement("div");
+          chip.className = "chip";
+          chip.textContent = item;
+          container.appendChild(chip);
+        });
+      }
+
+      // Detect mobile OS
       function getMobileOS() {
         const ua = navigator.userAgent || navigator.vendor || window.opera;
         if (/android/i.test(ua)) return "Android";
@@ -532,48 +689,42 @@
         } else if (os === "Android") {
           window.location.href = PLAY_STORE_URL;
         } else {
-          // fallback: open website or show a modal
           window.location.href = APP_STORE_URL;
         }
       }
 
-      document
-        .getElementById("phoneConnectBtn")
-        .addEventListener("click", handleConnectToView);
-      document
-        .getElementById("emailConnectBtn")
-        .addEventListener("click", handleConnectToView);
+      // Event listeners setup
+      function setupEventListeners() {
+        // Connect to view buttons
+        document.getElementById("phoneConnectBtn").addEventListener("click", handleConnectToView);
+        document.getElementById("emailConnectBtn").addEventListener("click", handleConnectToView);
 
-      // Handle Connect button (only if visible)
-      document.getElementById("connectBtn").addEventListener("click", () => {
-        const os = getMobileOS();
-        if (os === "iOS") {
-          window.location.href = APP_STORE_URL;
-        } else if (os === "Android") {
-          window.location.href = PLAY_STORE_URL;
-        } else {
-          window.location.href = APP_STORE_URL;
-        }
-      });
+        // Connect button
+        document.getElementById("connectBtn").addEventListener("click", () => {
+          const os = getMobileOS();
+          if (os === "iOS") {
+            window.location.href = APP_STORE_URL;
+          } else if (os === "Android") {
+            window.location.href = PLAY_STORE_URL;
+          } else {
+            window.location.href = APP_STORE_URL;
+          }
+        });
 
-      // Handle App Store button
-      document
-        .querySelectorAll(".store-btn")[0]
-        .addEventListener("click", () => {
+        // App Store button
+        document.querySelectorAll(".store-btn")[0].addEventListener("click", () => {
           window.location.href = APP_STORE_URL;
         });
 
-      // Handle Google Play button
-      document
-        .querySelectorAll(".store-btn")[1]
-        .addEventListener("click", () => {
+        // Google Play button
+        document.querySelectorAll(".store-btn")[1].addEventListener("click", () => {
           window.location.href = PLAY_STORE_URL;
         });
 
-      //Downloading VCF
-      document
-        .getElementById("saveContactBtn")
-        .addEventListener("click", () => {
+        // Save contact button
+        document.getElementById("saveContactBtn").addEventListener("click", () => {
+          if (!userData) return;
+
           const vcfData = `
 BEGIN:VCARD
 VERSION:3.0
@@ -585,7 +736,7 @@ TITLE:${userData.job_title}
 NOTE:${userData.bio || ""}
 PHOTO;VALUE=URI:${userData.profile_picture_url || ""}
 END:VCARD
-    `.trim();
+          `.trim();
 
           const blob = new Blob([vcfData], { type: "text/vcard" });
           const link = document.createElement("a");
@@ -596,105 +747,38 @@ END:VCARD
           document.body.removeChild(link);
         });
 
-      userData = {
-        user_id: "69b83914-b7ef-4039-a9b6-61935224b7dd",
-        full_name: "Shyam Kumareee",
-        date_of_birth: "2000-01-26T00:00:00.000Z",
-        gender: "male",
-        bio: "Passionate about creating intuitive user experiences and innovative design solutions. Always eager to collaborate on projects that make a meaningful impact.",
-        email: "shyam.kumar@amazon.com",
-        phone: "+91 98765 43210",
-        current_company: ["Amazon", "GoPro", "20th Century Studios"],
-        country_code: "null",
-        job_title: "Design Lead",
-        city: "Bangalore",
-        current_industry: ["Technology", "E-commerce"],
-        industries_of_interest: ["fintech", "fashion"],
-        cities_on_radar: ["Bangalore", "Pune"],
-        connection_preferences: [
-          "Product Designer",
-          "Project Manager",
-          "Design Engineer",
-          "Interaction Designer",
-        ],
-        profile_picture_url:
-          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-        allow_vbc_sharing: false,
-        is_active: true,
-        created_at: "2025-07-16T10:33:22.848Z",
-        updated_at: "2025-08-09T07:51:30.499Z",
-      };
+        // Share button
+        document.querySelector(".share-btn").addEventListener("click", async () => {
+          const shareData = {
+            title: document.title,
+            text: "Check out this profile on HubbleMeet!",
+            url: window.location.href,
+          };
 
-      populateProfile(userData);
-      const fetchData = async () => {
-        const url =
-          "https://d2aks9kyhua4na.cloudfront.net/api/user/profiles/get-profile";
-        const res = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OWI4MzkxNC1iN2VmLTQwMzktYTliNi02MTkzNTIyNGI3ZGQiLCJlbWFpbCI6InRlc3R1c2VyMjAwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDgzOTE2OCwiZXhwIjoxNzU1MDk4MzY4fQ.c4u-NQhnZ-g1UFPBoXsY6-oGOAAAVj-09Yo2RngHiIA",
-          },
-          body: JSON.stringify({
-            user_id: userId,
-          }),
-        });
-        console.log("res", res);
-        const data = res.json();
-        console.log(data);
-        populateProfile(data);
-      };
-
-      fetchData();
-
-      function populateProfile(userData) {
-        document.getElementById("fullName").textContent =
-          userData.full_name || "";
-        document.getElementById("company").textContent =
-          userData.current_company?.[0] || "";
-        document.getElementById("jobTitle").textContent =
-          userData.job_title || "";
-        document.getElementById("bio").textContent = userData.bio || "";
-        document.getElementById("phone").textContent = userData.phone || "";
-        document.getElementById("email").textContent = userData.email || "";
-        document.getElementById("profileImage").src =
-          userData.profile_picture_url || "";
-
-        renderChips(
-          "industriesOfInterest",
-          userData.industries_of_interest || []
-        );
-        renderChips("currentIndustry", userData.current_industry || []);
-        renderChips(
-          "connectionPreferences",
-          userData.connection_preferences || []
-        );
-      }
-
-      function renderChips(containerId, items) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = "";
-        items.forEach((item) => {
-          const chip = document.createElement("div");
-          chip.className = "chip";
-          chip.textContent = item;
-          container.appendChild(chip);
+          if (navigator.share) {
+            try {
+              await navigator.share(shareData);
+              console.log("Profile shared successfully");
+            } catch (err) {
+              console.error("Error sharing:", err);
+            }
+          } else {
+            // Fallback: copy link to clipboard
+            navigator.clipboard.writeText(window.location.href).then(() => {
+              alert("Link copied to clipboard!");
+            });
+          }
         });
       }
 
-      if (userId) {
-        fetchUserProfile(userId);
-      } else {
-        console.error("No userId found in URL");
+      // Initialize the app
+      function init() {
+        setupEventListeners();
+        fetchUserData();
       }
 
-      // Add fetchUserProfile function (placeholder)
-      function fetchUserProfile(userId) {
-        // This would normally fetch data from your API
-        console.log("Fetching profile for user:", userId);
-        // For now, using the hardcoded userData
-      }
+      // Start the application
+      init();
     </script>
   </body>
 </html>
